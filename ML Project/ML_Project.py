@@ -41,6 +41,10 @@ def generatePasswords(numOfPasswords):
 
 
 
-#generatePasswords(1000000)
+#generatePasswords(500000)
 
 nn.trainNetwork()
+
+nn.testModel()
+
+#nn.useGPU()

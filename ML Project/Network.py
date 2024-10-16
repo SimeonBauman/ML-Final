@@ -6,7 +6,7 @@ import torch.optim as optim
  
 def trainNetwork():
     # load the dataset, split into input (X) and output (y) variables
-    dataset = np.loadtxt('profiles1.csv', delimiter=',',skiprows=1)
+    dataset = np.loadtxt('tenThous.csv', delimiter=',',skiprows=1)
     X = dataset[:,0:5]
     y = dataset[:,5]
  
@@ -15,11 +15,13 @@ def trainNetwork():
  
     # define the model
     model = nn.Sequential(
-        nn.Linear(5, 12),
+        nn.Linear(5, 1000),
         nn.ReLU(),
-        nn.Linear(12, 8),
+        nn.Linear(1000, 1000),
         nn.ReLU(),
-        nn.Linear(8, 1),
+        nn.Linear(1000, 1000),
+        nn.ReLU(),
+        nn.Linear(1000, 1),
         nn.Sigmoid()
     )
     print(model)
@@ -47,3 +49,26 @@ def trainNetwork():
         y_pred = model(X)
     accuracy = (y_pred.round() == y).float().mean()
     print(f"Accuracy {accuracy}")
+    
+    torch.save(model,'test_model')
+    
+def testModel():
+    model = torch.load('test_model', weights_only=False)
+    
+    dataset = np.loadtxt('million.csv', delimiter=',',skiprows=1)
+    X = dataset[:,0:5]
+    y = dataset[:,5]
+ 
+    X_test = torch.tensor(X, dtype=torch.float32)
+    y_test = torch.tensor(y, dtype=torch.float32).reshape(-1, 1)
+
+    # Make predictions with no_grad
+    with torch.no_grad():
+        y_pred = model(X_test)
+
+    # Compute accuracy
+    accuracy = (y_pred.round() == y_test).float().mean()
+    print(f"Test Accuracy: {accuracy}")
+    
+
+
