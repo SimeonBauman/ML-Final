@@ -23,6 +23,7 @@ def checkPassword(password):
 
   
 def isValid(conditions):
+    #1 cap 1 lower 1 symbol 1 number 12 length
     if conditions[0] >= 1 and conditions[1] >= 1 and conditions[2] >= 1 and conditions[3] >= 1 and conditions[4] > 12:
         return 1
     return 0
@@ -41,10 +42,17 @@ def generatePasswords(numOfPasswords):
 
 
 
+def userMode():
+    password = input("Enter Test Password ")
+    split = checkPassword(password)
+    nn.userPassword(split)
+
+
+userMode()
 #generatePasswords(500000)
 
-nn.trainNetwork()
+#nn.trainNetwork()
 
-nn.testModel()
+#nn.testModel()
 
 #nn.useGPU()

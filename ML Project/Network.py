@@ -70,5 +70,38 @@ def testModel():
     accuracy = (y_pred.round() == y_test).float().mean()
     print(f"Test Accuracy: {accuracy}")
     
+def userPassword(password):
+    model = torch.load('test_model', weights_only=False)
+    
+    dataset = password
+    X = password
+    
+ 
+    X_test = torch.tensor(X, dtype=torch.float32)
+    
 
-
+    # Make predictions with no_grad
+    with torch.no_grad():
+        y_pred = model(X_test)
+        found = False
+        temp = ""
+        pred = str(y_pred[0])
+        for i in range(len(pred)):
+            if pred[i] == ')':
+                found = False
+                
+            if found == True:
+                temp += pred[i]
+                
+            if pred[i] == '(':
+                found = True
+      
+        num = float(temp)       
+        if num > .5:
+            print("valid")
+        else:
+            print("invalid")
+     
+    # Compute accuracy
+    
+   
