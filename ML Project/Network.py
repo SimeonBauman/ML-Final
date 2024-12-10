@@ -4,9 +4,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
  
-def trainNetwork():
+def trainNetwork(modelName, trainFile):
     # load the dataset, split into input (X) and output (y) variables
-    dataset = np.loadtxt('tenThous.csv', delimiter=',',skiprows=1)
+    dataset = np.loadtxt(trainFile, delimiter=',',skiprows=1)
     X = dataset[:,0:5]
     y = dataset[:,5]
  
@@ -30,7 +30,7 @@ def trainNetwork():
     loss_fn   = nn.BCELoss()  # binary cross entropy
     optimizer = optim.Adam(model.parameters(), lr=0.001)
  
-    n_epochs = 100
+    n_epochs = 5
     batch_size = 10
  
     for epoch in range(n_epochs):
@@ -50,12 +50,12 @@ def trainNetwork():
     accuracy = (y_pred.round() == y).float().mean()
     print(f"Accuracy {accuracy}")
     
-    torch.save(model,'test_model')
+    torch.save(model,modelName)
     
-def testModel():
-    model = torch.load('test_model', weights_only=False)
+def testModel(modelName, testFile):
+    model = torch.load(modelName, weights_only=False)
     
-    dataset = np.loadtxt('million.csv', delimiter=',',skiprows=1)
+    dataset = np.loadtxt(testFile, delimiter=',',skiprows=1)
     X = dataset[:,0:5]
     y = dataset[:,5]
  
@@ -70,8 +70,8 @@ def testModel():
     accuracy = (y_pred.round() == y_test).float().mean()
     print(f"Test Accuracy: {accuracy}")
     
-def userPassword(password):
-    model = torch.load('test_model', weights_only=False)
+def userPassword(password, modelName):
+    model = torch.load(modelName, weights_only=False)
     
     dataset = password
     X = password
